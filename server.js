@@ -7,7 +7,7 @@ const app = express()
 
 const cookieSession = require("cookie-session");
 const session = require("express-session");
-// Carga el middleware de sesión de Express
+
 const sessionMiddleware = session({
   secret: "my-secret",
   resave: false,
@@ -27,10 +27,9 @@ app.get('/', (req, res) => {
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
-//   console.log(`Server is running on port ${process.env.DB_NAME}.`);
 });
 
 
 /* -- Rutas -- */
-require("./rutas/authentication")(app);  // Importa y configura las rutas de usuario en la aplicación 
+require("./rutas/authentication")(app); 
 require("./rutas/user_routes")(app); 

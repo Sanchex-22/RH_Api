@@ -1,4 +1,4 @@
-require('dotenv').config({path: '../../.env'}); // Cargar las variables de entorno desde el archivo .env
+require('dotenv').config({path: '../../.env'});
 
 module.exports = {
   MAIL: process.env.MAIL, 

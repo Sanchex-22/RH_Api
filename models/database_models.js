@@ -1,15 +1,12 @@
-/* -- Importa la configuración de la base de datos desde el archivo db.config.js --*/
 const config = require("../database/bd");
-
-/* -- Importa la biblioteca Sequelize para la administración de la base de datos -- */
 const Sequelize = require("sequelize");
 
 const sequelize = new Sequelize(
-    config.DB,         // Nombre de la base de datos obtenido de la configuración
-    config.USER,       // Nombre de usuario de la base de datos obtenido de la configuración
-    config.PASSWORD,   // Contraseña de la base de datos obtenida de la configuración
+    config.DB,         
+    config.USER,       
+    config.PASSWORD,  
     {
-      host: config.HOST,                 // Host de la base de datos obtenido de la configuración
+      host: config.HOST,            
       dialect: config.dialect,           // Dialecto de la base de datos obtenido de la configuración
       pool: {                            // * Configuración del grupo de conexiones de la base de datos
         max: config.pool.max,            // Número máximo de conexiones en el grupo
@@ -21,9 +18,8 @@ const sequelize = new Sequelize(
   );
 
 
-/* -- Objeto para almacenar los modelos y otras configuraciones de la base de datos --*/
 const db = {};
-db.Sequelize = Sequelize;   // Asigna el objeto Sequelize al objeto db
+db.Sequelize = Sequelize;
 db.sequelize = sequelize; 
 
 /* -- Importa el modelo de usuario y lo asocia con la conexión a la base de datos -- */
@@ -39,8 +35,6 @@ db.request = require("../models/request_moduls")(sequelize,Sequelize);
 db.type_contracts = require("../models/type_contracts_models")(sequelize,Sequelize);
 db.companies = require("../models/companies_models")(sequelize,Sequelize);
 /* -- Exporta el objeto db para que pueda ser utilizado en otros archivos -- */
-
-// console.log(db)
 
 /* -- Establece la relación uno a uno entre user y persons -- */
 db.user.hasOne(db.persons, {

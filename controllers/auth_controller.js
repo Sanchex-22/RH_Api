@@ -1,12 +1,11 @@
-const db = require("../models/database_models");                 // Importa el archivo de modelos de la bd
+const db = require("../models/database_models");            
 const config = require("../config/authenticationkey");
 const User = db.user; 
-const Persons = db.persons;                        // Obtiene el modelo de usuario desde la bd
+const Persons = db.persons;       
 const Op = db.Sequelize.Op; 
-const jwt = require("jsonwebtoken");  // Importa el módulo 'jsonwebtoken' para generar tokens JWT
+const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
-// CONTROLADOR PARA EL LOGIN
 exports.login = async (req, res) => {
   try {
     const user = await User.findOne({
@@ -58,8 +57,6 @@ exports.login = async (req, res) => {
   }
 };
 
-// CONTROLADOR PARA EL LOGOUT
-
 exports.logout = async (req, res) => {
     try {
       req.session = null;
@@ -71,7 +68,6 @@ exports.logout = async (req, res) => {
     }
 };
 
-// Controlador para registrar un nuevo usuario
 exports.register = async (req,res) =>{
 
   try{
@@ -120,7 +116,7 @@ exports.register = async (req,res) =>{
     const user = await User.create({
       username,
       email,
-      password: bcrypt.hashSync(password, 8),  // Cifra la contraseña utilizando bcrypt
+      password: bcrypt.hashSync(password, 8),
       roles,
     });
 
