@@ -19,14 +19,14 @@ const dbData = {
 // * instancia de Sequelize utilizando las variables de entorno
 const sequelize = new Sequelize(dbData.DB, dbData.USER, dbData.PASSWORD, {
   host: dbData.HOST,
-  dialect: dbData.dialect, // Asegúrate de que el dialecto sea correcto (debería ser 'mysql')
+  dialect: dbData.dialect, // !(debería ser 'mysql')
   pool: {
     max: dbData.pool.max,
     min: dbData.pool.min,
     acquire: dbData.pool.acquire,
     idle: dbData.pool.idle
   }
-  //! Otras opciones, como 'logging: false', se pueden agregar aquí si es necesario.
+  // * Otras opciones, como 'logging: false', se pueden agregar aquí si es necesario.
 })
 
 export default sequelize
