@@ -1,8 +1,9 @@
 import express from 'express'
 // import { sessionMiddleware } from './src/middleware/session_mw'
-import { corsMiddleware } from './src/middleware/cors_mw.mjs'
+import { corsMiddleware } from './src/middleware/cors_mw.js'
+import sequelize from './config/db_config.mjs'
 // import userrouter from './src/routes/user_routes'
-import dbconnection from './utils/dbconnection_util'
+
 // const bodyParser = require('body-parser')
 // import cookieSession from 'cookie-session'
 
@@ -10,8 +11,16 @@ const app = express()
 
 // app.use(sessionMiddleware)
 app.use(corsMiddleware)
-app.use(dbconnection)
+async function checkDatabaseConnection () {
+  try {
+    await sequelize.authenticate()
+    console.log('Conexión a la base de datos MySQL establecida correctamente.')
+  } catch (error) {
+    console.error('Error al conectar a la base de datos:', error)
+  }
+}
 
+checkDatabaseConnection()
 // app.use(bodyParser.urlencoded({ extended: false }))
 // app.use(bodyParser.json({ limit: '10mb' }))
 
@@ -22,12 +31,5 @@ app.use(dbconnection)
 const PORT = process.env.PORT || 3000
 
 app.listen(PORT, async () => {
-  // Este bloque intenta autenticar la conexión a la base de datos cuando se inicia el servidor
-  try {
-    await dbconnection.authenticate()
-    console.log('Connection has been established successfully.')
-  } catch (error) {
-    console.error('Unable to connect to the database:', error)
-  }
   console.log(`Server is running on port ${PORT}.`)
 })
