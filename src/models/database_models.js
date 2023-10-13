@@ -33,7 +33,7 @@ db.permisions = require("../models/permisions_models")(sequelize,Sequelize);
 db.vacations = require("../models/vacations_models")(sequelize,Sequelize);
 db.request = require("../models/request_moduls")(sequelize,Sequelize);
 db.type_contracts = require("../models/type_contracts_models")(sequelize,Sequelize);
-db.companies = require("../models/companies_models")(sequelize,Sequelize);
+db.companies = require("../models/companies_models").default(sequelize,Sequelize);
 /* -- Exporta el objeto db para que pueda ser utilizado en otros archivos -- */
 
 /* -- Establece la relación uno a uno entre user y persons -- */

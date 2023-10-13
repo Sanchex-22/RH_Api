@@ -1,35 +1,24 @@
-require('dotenv').config({path: './.env'});
-const express = require('express')
-const cors = require('cors')
-const mysql = require('mysql')
+import { express } from 'express'
+import { sessionMiddleware } from './src/middleware/session_nw'
+import { corsMiddleware } from './src/middleware/cors_mw.mjs'
+import userrouter from './src/routes/user_routes'
+
 const bodyParser = require('body-parser')
 const app = express()
 
-const cookieSession = require("cookie-session");
-const session = require("express-session");
+// const cookieSession = require("cookie-session")
 
-const sessionMiddleware = session({
-  secret: "my-secret",
-  resave: false,
-  saveUninitialized: true,
-});
-app.use(sessionMiddleware);
+app.use(sessionMiddleware)
+app.use(corsMiddleware)
 
-app.use(cors())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json({ limit: '10mb' }))
 
+// rutas
+app.get('/', (req, res) => { res.send('hola desde la RH_API') })
+app.use('/api/user', userrouter)
 
-app.get('/', (req, res) => {
-	res.send('hola desde tu primera ruta de la Api')
-})
-
-const PORT = process.env.PORT;
+const PORT = process.env.PORT
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}.`);
-});
-
-
-/* -- Rutas -- */
-require("./rutas/authentication")(app); 
-require("./rutas/user_routes")(app); 
+  console.log(`Server is running on port ${PORT}.`)
+})
