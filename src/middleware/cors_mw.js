@@ -1,7 +1,7 @@
 import cors from 'cors'
 
 const corsMiddleware = cors({
-  origin: 'http://localhost:3000', // origen de tu aplicación
+  origin: 'http://localhost:3001', // origen de tu aplicación
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true // Permite el envío de cookies en las solicitudes
 })
