@@ -1,4 +1,4 @@
-import { user as _user, persons, Sequelize } from '../models/database_models'
+import db from '../models/database_models'
 import { secret } from '../config/authenticationkey'
 
 import { sign } from 'jsonwebtoken'

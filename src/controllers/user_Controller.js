@@ -1,6 +1,7 @@
-const db = require('../models/database_models')
-const Persons = db.persons
-const User = db.user
+import db from '../models/database_models'
+
+const Persons = db.Person
+const User = db.User
 // import { user } from '../models/database_models'
 
 export class UserController {

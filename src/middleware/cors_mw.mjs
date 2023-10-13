@@ -7,7 +7,6 @@ const corsMiddleware = cors({
 })
 
 export { corsMiddleware }
-
 /*
  require('dotenv').config({ path: './.env' })
 

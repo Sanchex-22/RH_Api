@@ -1,6 +1,7 @@
-require('dotenv').config({ path: '../../.env' })
+import dotenv from 'dotenv'
+dotenv.config({ path: '../.env' })
 
-module.exports = {
+export const emailconfig = {
   MAIL: process.env.MAIL,
   MAIL_PASSWORD: process.env.MAIL_PASSWORD,
   CLIENT_ID: process.env.CLIENT_ID,
