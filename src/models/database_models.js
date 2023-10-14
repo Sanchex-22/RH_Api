@@ -1,7 +1,4 @@
-import dbConfig from '../../config/db_config'
 import { Sequelize } from 'sequelize'
-
-const sequelize = new Sequelize(dbConfig)
 
 const db = {}
 
