@@ -33,13 +33,11 @@
     "jquery": "^3.7.1",
     "jsonwebtoken": "^9.0.0",
     "mysql2": "^2.3.3",
-    "nodemailer": "^6.9.5",
-    "zod": "^3.22.4"
+    "nodemailer": "^6.9.5"
   },
   "devDependencies": {
     "nodemon": "^3.0.1",
     "sequelize": "^6.33.0",
-    "sequelize-cli": "^6.6.1",
     "standard": "^17.1.0"
   },
   "eslintConfig": {
