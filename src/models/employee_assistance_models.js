@@ -1,6 +1,5 @@
-module.exports = (sequelize,Sequelize)=>{
-
-    const employee_assistance = sequelize.define("employee_assistance.",{
+module.exports = (sequelize, Sequelize) => {
+  const employee_assistance = sequelize.define("employee_assistance.",{
         id:{
             type: Sequelize.INTEGER,
             primaryKey: true,
