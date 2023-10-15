@@ -1,12 +1,12 @@
-import { UserController } from '../controllers/UserController.mjs'
+import { userController } from '../controllers/userController.mjs'
 import { Router } from 'express'
 
 const UserRouter = Router()
 
 // * User Routes
-UserRouter.get('/Profile/:id', UserController.getProfile)
-UserRouter.get('/GetAllUser', UserController.getAllUsers)
-UserRouter.delete('/DeleteUser/:id', UserController.deleteUser)
-UserRouter.put('/EditUser', UserController.editUser)
+UserRouter.get('/Profile/:id', userController.getProfile)
+UserRouter.get('/GetAllUser', userController.getAllUsers)
+UserRouter.delete('/DeleteUser/:id', userController.deleteUser)
+UserRouter.put('/EditUser', userController.editUser)
 
 export default UserRouter

@@ -1,11 +1,11 @@
-import { AuthController } from '../controllers/AuthController.mjs'
+import { authController } from '../controllers/authController.mjs'
 import { Router } from 'express'
 
-const AuthRoutes = Router()
+const authRoutes = Router()
 
 // * Auth Routes
-AuthRoutes.post('/Login', AuthController.login)
-AuthRoutes.post('/Logout', AuthController.logout)
-AuthRoutes.post('/Register', AuthController.register)
+authRoutes.post('/Login', authController.login)
+authRoutes.post('/Logout', authController.logout)
+authRoutes.post('/Register', authController.register)
 
-export default AuthRoutes
+export default authRoutes

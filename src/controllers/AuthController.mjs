@@ -1,4 +1,4 @@
-export class AuthController {
+export class authController {
   // * Login
   static async login (req, res) {
     try {

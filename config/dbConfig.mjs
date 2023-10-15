@@ -28,7 +28,9 @@ const sequelize = new Sequelize(dbData.DB, dbData.USER, dbData.PASSWORD, {
 async function checkDatabaseConnection () {
   try {
     await sequelize.authenticate()
-    console.log('The connection to the MySQL database was established successfully.')
+    console.log(
+      'The connection to the MySQL database was established successfully.'
+    )
   } catch (error) {
     console.error('Error connecting to database: ', error)
   }
@@ -36,6 +38,8 @@ async function checkDatabaseConnection () {
 
 async function modelSynchronization () {
   try {
+    await sequelize.drop()
+    console.log('All tables dropped!')
     await sequelize.sync()
     // !User.sync() - This creates the table if it doesn't exist
     // !User.sync({ force: true }) - This creates the table, dropping it first if it already existed

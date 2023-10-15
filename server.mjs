@@ -7,11 +7,11 @@ import bodyParser from 'body-parser'
 import { corsMiddleware } from './src/middleware/CorsMiddleware.mjs'
 
 // * import Routes
-import UserRouter from './src/routes/UserRoutes.mjs'
-import AuthRoutes from './src/routes/AuthRoutes.mjs'
+import userRouter from './src/routes/userRoutes.mjs'
+import authRoutes from './src/routes/AuthRoutes.mjs'
 
 // * import Util/Config
-import { checkDatabaseConnection } from './config/db_config.mjs'
+import { checkDatabaseConnection } from './config/dbConfig.mjs'
 
 const app = express()
 
@@ -30,8 +30,8 @@ checkDatabaseConnection()
 
 // * Routes
 app.get('/', (req, res) => { res.send('Hola desde la RH_API') })
-app.use('/Api/User', UserRouter)
-app.use('/Api/Auth', AuthRoutes)
+app.use('/Api/User', userRouter)
+app.use('/Api/Auth', authRoutes)
 
 // * Start Server
 const PORT = process.env.PORT || 3001
