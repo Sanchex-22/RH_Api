@@ -1,7 +1,7 @@
-import { sequelize } from '../../config/dbConfig.mjs'
 import { DataTypes } from 'sequelize'
+import { sequelize } from '../../server.mjs'
 
-sequelize.define('users', {
+const User = sequelize.define('users', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -20,3 +20,5 @@ sequelize.define('users', {
     type: DataTypes.STRING
   }
 })
+
+export default User

@@ -1,7 +1,7 @@
 import dotenv from 'dotenv'
 dotenv.config({ path: '../.env' })
 
-export const emailconfig = {
+export const emailConfig = {
   MAIL: process.env.MAIL,
   MAIL_PASSWORD: process.env.MAIL_PASSWORD,
   CLIENT_ID: process.env.CLIENT_ID,
