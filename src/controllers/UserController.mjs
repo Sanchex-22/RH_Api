@@ -5,14 +5,11 @@ export class userController {
   static async newUser (req, res) {
     try {
       // !Registrar Usuario
+      const { username, email, password, roles } = req.body
       await user.sync()
       const createUser = await user.create({
-        username: 'Abi',
-        email: 'Abi@gmail.com',
-        password: 'xxxxxxxxxx',
-        roles: 'admin'
+        username, email, password, roles
       })
-      console.log(createUser)
       res.status(201).send({ message: 'Usuario registrado con éxito!' })
     } catch (error) {
       res.status(500).send({ message: 'Error interno del servidor', error })
@@ -26,6 +23,7 @@ export class userController {
       res.status(200).send()
     } catch (error) {
       console.error('Error al traer el perfil de usuario: ', error)
+      console.log(error)
       return res.status(500).send({ message: 'Error en el servidor.' })
     }
   }
@@ -34,7 +32,8 @@ export class userController {
   static async getAllUsers (req, res) {
     try {
       // !Hacer el getAllUser
-      res.status(200).send()
+      const User = await user.findAll()
+      res.status(200).json(User)
     } catch (error) {
       return res.status(500).send({ message: 'error en el servidor' })
     }
