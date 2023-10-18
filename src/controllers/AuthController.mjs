@@ -21,14 +21,4 @@ export class authController {
       this.next(err)
     }
   }
-
-  //* register
-  static async register (req, res) {
-    try {
-      // !Registrar Usuario
-      res.status(201).send({ message: 'Usuario registrado con éxito!' })
-    } catch (error) {
-      res.status(500).send({ message: 'Error interno del servidor', error })
-    }
-  }
 }

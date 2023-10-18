@@ -1,4 +1,24 @@
+import { user } from '../database/usersModels.mjs'
+
 export class userController {
+  //* register user
+  static async newUser (req, res) {
+    try {
+      // !Registrar Usuario
+      await user.sync()
+      const createUser = await user.create({
+        username: 'Abi',
+        email: 'Abi@gmail.com',
+        password: 'xxxxxxxxxx',
+        roles: 'admin'
+      })
+      console.log(createUser)
+      res.status(201).send({ message: 'Usuario registrado con éxito!' })
+    } catch (error) {
+      res.status(500).send({ message: 'Error interno del servidor', error })
+    }
+  }
+
   // * Traer perfil del usuario
   static async getProfile (req, res) {
     try {

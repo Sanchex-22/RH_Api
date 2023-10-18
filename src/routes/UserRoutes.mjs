@@ -4,6 +4,7 @@ import { Router } from 'express'
 const UserRouter = Router()
 
 // * User Routes
+UserRouter.post('/NewUser', userController.newUser)
 UserRouter.get('/Profile/:id', userController.getProfile)
 UserRouter.get('/GetAllUser', userController.getAllUsers)
 UserRouter.delete('/DeleteUser/:id', userController.deleteUser)

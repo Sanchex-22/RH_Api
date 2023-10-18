@@ -1,4 +1,4 @@
-import { sequelize } from '../../server.mjs'
+import { sequelize } from '../server.mjs'
 import './usersModels.mjs'
 
 export async function createTables () {

@@ -1,4 +1,4 @@
-import { sequelize } from '../../config/dbConfig.mjs'
+import { sequelize } from '../config/dbConfig.mjs'
 import { DataTypes } from 'sequelize'
 
 sequelize.define('type_contracts', {
