@@ -1,13 +1,14 @@
 import { user } from '../database/usersModels.mjs'
-
+import { encrypt } from '../../utils/EncryptionUtil.mjs'
 export class userController {
   //* register user
   static async newUser (req, res) {
     try {
-      // !Registrar Usuario
-      const { username, email, password, roles } = req.body
+      // TODO: Registrar Usuario, agregar validaciones
+      const { username, email, pass, roles } = req.body
+      const password = await encrypt(pass)
       await user.sync()
-      const createUser = await user.create({
+      await user.create({
         username, email, password, roles
       })
       res.status(201).send({ message: 'Usuario registrado con éxito!' })
@@ -19,7 +20,7 @@ export class userController {
   // * Traer perfil del usuario
   static async getProfile (req, res) {
     try {
-      // !hacer el getPerfile
+      // TODO: hacer el getPerfile
       res.status(200).send()
     } catch (error) {
       console.error('Error al traer el perfil de usuario: ', error)
@@ -31,7 +32,7 @@ export class userController {
   // * Traer a todos los usuarios
   static async getAllUsers (req, res) {
     try {
-      // !Hacer el getAllUser
+      // TODO: Hacer el getAllUser
       const User = await user.findAll()
       res.status(200).json(User)
     } catch (error) {
@@ -43,7 +44,7 @@ export class userController {
   static async deleteUser (req, res) {
     console.log(req.body.id)
     try {
-      // !Hacer el deleteUser
+      // TODO: Hacer el deleteUser
       console.log('Usuario eliminado correctamente')
       res.status(201).send({ message: 'Usuario eliminado con éxito!' })
     } catch (error) {
@@ -54,7 +55,7 @@ export class userController {
   // * Editar un Usuario
   static async editUser (req, res) {
     try {
-      // !Hacer el editUser
+      // TODO: Hacer el editUser
       res.status(200).send({ message: 'Usuario Editado con exito' })
     } catch (error) {
       res.status(500).send({ message: 'Error en el servidor' })
