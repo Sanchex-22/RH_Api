@@ -28,8 +28,8 @@ app.use(bodyParser.json({ limit: '10mb' }))
 app.get('/', (req, res) => {
   res.send('Hola desde la RH_API')
 })
-app.use('/Api/User', userRouter)
-app.use('/Api/Auth', authRoutes)
+app.use('/api/user', userRouter)
+app.use('/api/auth', authRoutes)
 
 // * Start Server
 const PORT = process.env.PORT || 3001
