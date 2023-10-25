@@ -1,29 +1,44 @@
 # RH_Api
 # codigo para la db config in mysql 
 
-1. **DB CONFIG**
+1. **ENV VARIABLES**
 
  ```s
-    import { config } from 'dotenv'
-    config({ path: '../.env' })
+    PORT=3001
+    DB_HOST=localhost
+    DB_USER=root
+    DB_PASSWORD='{your password}'
+    DB_NAME=recursoshumanos
+    DB_DIALECT=mysql   
+    DB_POOL_MAX=8
+    DB_POOL_MIN=0
+    DB_POOL_ACQUIR=30000
+    DB_POOL_IDLE=10000
+    API_URL=http://localhost:3001
+ ```
+
+2. **DB CONFIG .ENV**
+
+ ```s
+    import 'dotenv/config'
 
     export const dbConfig = {
-    HOST: 'localhost',
-    USER: 'root',
-    PASSWORD: '12345',
-    DB: 'recursoshumanos',
-    dialect: 'mysql',
+    HOST: process.env.DB_HOST,
+    USER: process.env.DB_USER,
+    PASSWORD: process.env.DB_PASSWORD,
+    DB: process.env.DB_NAME,
+    dialect: process.env.DB_DIALECT,
     pool: {
-        max: parseInt('8'),
-        min: parseInt('0'),
-        acquire: parseInt('300000'),
-        idle: parseInt('100000')
+        max: parseInt(process.env.DB_POOL_MAX),
+        min: parseInt(process.env.DB_POOL_MIN),
+        acquire: parseInt(process.env.DB_POOL_ACQUIRE),
+        idle: parseInt(process.env.DB_POOL_IDLE)
     }
     }
     export default dbConfig
 ```
 
-2. **DB CONFIG**
+3. **SEQUELIZE CONFIG**
 
  ```s
     import config from '../../config/dbConfig.mjs'

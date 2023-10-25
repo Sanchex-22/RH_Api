@@ -1,5 +1,4 @@
 import config from '../../config/dbConfig.mjs'
-/* -- Importa la biblioteca Sequelize para la administración de la base de datos -- */
 import { Sequelize } from 'sequelize'
 
 const sequelize = new Sequelize(
