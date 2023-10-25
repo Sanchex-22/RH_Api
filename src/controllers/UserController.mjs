@@ -3,9 +3,11 @@ import { encrypt } from '../../utils/EncryptionUtil.mjs'
 export class userController {
   //* register user
   static async newUser (req, res) {
+    console.log(req.body)
     try {
       // TODO: Registrar Usuario, agregar validaciones
       const { username, email, pass, roles } = req.body
+      console.log(req.body)
       const password = await encrypt(pass)
       await user.sync()
       await user.create({

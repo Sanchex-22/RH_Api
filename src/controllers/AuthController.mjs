@@ -1,10 +1,30 @@
+import bcrypt from 'bcryptjs'
+import { user } from '../database/usersModels.mjs'
 export class authController {
   // * Login
   static async login (req, res) {
     try {
       // !Iniciar Session
+      console.log(user)
+      console.log(req.body)
+      const u = await user.findOne({
+        where: {
+          email: req.body.email
+        }
+      })
+      if (!u) { return res.status(404).send({ message: 'Usuario y contraseña incorrectos' }) }
+      const passwordIsValid = bcrypt.compareSync(req.body.password, u.password)
 
-      return res.status(200).send()
+      if (!passwordIsValid) { return res.status(401).send({ message: 'Usuario y contraseña incorrectos' }) }
+
+      // Aqui se genera el token
+
+      return res.status(200).send({
+        id: u.id,
+        name: u.name,
+        email: u.email,
+        roles: u.roles
+      })
     } catch (error) {
       return res.status(500).send({ message: 'Error interno del servidor', error })
     }
