@@ -1,7 +1,7 @@
 import { verify } from 'jsonwebtoken'
 import { secret } from '../config/auth.config.js'
 import { user } from '../models'
-
+// todo: hacer esto
 verifyToken = (req, res, next) => {
   const token = req.session.token
   console.log(token + 'aqui')
