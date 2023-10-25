@@ -24,6 +24,12 @@ user.init(
     },
     roles: {
       type: DataTypes.STRING
+    },
+    status: {
+      type: DataTypes.STRING
+    },
+    auth_email: {
+      type: DataTypes.BOOLEAN
     }
   },
   {

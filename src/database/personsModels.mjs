@@ -29,11 +29,11 @@ sequelize.define('persons', {
   },
   second_name: {
     type: DataTypes.STRING(50),
-    allowNull: false
+    allowNull: true
   },
   second_lastname: {
     type: DataTypes.STRING(50),
-    allowNull: false
+    allowNull: true
   },
   nacionality: {
     type: DataTypes.STRING(50),
