@@ -27,9 +27,6 @@ user.init(
     },
     status: {
       type: DataTypes.STRING
-    },
-    auth_email: {
-      type: DataTypes.BOOLEAN
     }
   },
   {

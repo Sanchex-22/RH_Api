@@ -1,7 +1,7 @@
 import { DataTypes } from 'sequelize'
 import { sequelize } from '../../config/db_config.mjs'
 
-sequelize.define('persons', {
+sequelize.define('employee', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -15,20 +15,12 @@ sequelize.define('persons', {
       key: 'id' // Nombre de la clave primaria en la tabla persons
     }
   },
-  identification: {
-    type: DataTypes.STRING(50),
-    allowNull: false
-  },
-  name: {
-    type: DataTypes.STRING(50),
-    allowNull: false
-  },
-  second_name: {
-    type: DataTypes.STRING(50),
-    allowNull: true
-  },
-  nacionality: {
-    type: DataTypes.STRING(50),
-    allowNull: false
+  company_id: {
+    type: DataTypes.INTEGER,
+    allowNull: true, // Opcional dependiendo de tus necesidades
+    references: {
+      model: 'companies', // Nombre de la tabla a la que hace referencia
+      key: 'id' // Nombre de la clave primaria en la tabla persons
+    }
   }
 })
