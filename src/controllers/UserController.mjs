@@ -1,16 +1,52 @@
+/* eslint-disable camelcase */
 import { user } from '../database/usersModels.mjs'
+import { persons } from '../database/personsModels.mjs'
 import { encrypt } from '../../utils/EncryptionUtil.mjs'
 export class userController {
   //* register user
   static async newUser (req, res) {
     try {
-      // TODO: Registrar Usuario, agregar validaciones
-      const { username, email, pass, roles } = req.body
-      const password = await encrypt(pass)
       await user.sync()
+      await persons.sync()
+      // formatos
+      // const namePattern = /^[A-Za-z\s]+$/
+      const passwordPattern = /^(?=.*[A-Z])(?=.*\d).{8,}$/
+      // const cedulaPattern = /^\d{1,2}-\d{3,4}-\d{3,4}$/
+      // TODO: Registrar Usuario, agregar validaciones
+      // eslint-disable-next-line camelcase
+      let { username, email, pass, roles, status, identification, name, last_name, nationality } = req.body
+      username = username.trim()
+      email = email.trim()
+      let password = pass.trim()
+      roles = roles === '' ? 'user' : roles
+
+      if (!passwordPattern.test(password)) {
+        return res.status(404).send({ message: 'La contraseña debe contener al menos 8 caracteres, 1 letra mayúscula y 1 número.' })
+      }
+
+      if (!email.endsWith('@gmail.com') && !email.endsWith('@intermaritime.org')) {
+        return res.status(404).send({ message: 'El correo electrónico debe tener una terminación en "@gmail.com o @intermaritime.org"".' })
+      }
+
+      const existingUser = await user.findOne({ where: { username } })
+      if (existingUser) { return res.status(400).send({ message: 'Ya existe un usuario con este nombre de usuario.' }) }
+
+      const existingUserEmail = await user.findOne({ where: { email } })
+      if (existingUserEmail) { return res.status(400).send({ message: 'Ya existe un usuario con este correo electrónico.' }) }
+
+      password = await encrypt(pass)
+
       await user.create({
-        username, email, password, roles
+        username, email, password, roles, status
       })
+      await persons.create({
+        user_id: user.id,
+        identification,
+        name,
+        last_name,
+        nationality
+      })
+
       res.status(201).send({ message: 'Usuario registrado con éxito!' })
     } catch (error) {
       res.status(500).send({ message: 'Error interno del servidor', error })
