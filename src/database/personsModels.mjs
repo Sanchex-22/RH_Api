@@ -45,7 +45,7 @@ persons.init(
 
 persons.belongsTo(user, {
   foreignKey: 'user_id',
-  onDelete: 'CASCADE' // Configura la opción ON DELETE CASCADE para la relación
+  onDelete: 'CASCADE'
 })
 
 export { persons }

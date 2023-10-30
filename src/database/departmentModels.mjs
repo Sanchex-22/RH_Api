@@ -1,18 +1,28 @@
-import { DataTypes } from 'sequelize'
-import { sequelize } from '../../config/db_config.mjs'
+import { DataTypes, Model } from 'sequelize'
+import sequelize from './dbConnect.mjs'
 
-sequelize.define('department', {
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
+class department extends Model {}
+
+department.init(
+  {
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true,
+      autoIncrement: true
+    },
+    dp_name: {
+      type: DataTypes.STRING(50),
+      allowNull: false
+    },
+    num_employees: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    }
   },
-  dp_name: {
-    type: DataTypes.STRING(50),
-    allowNull: false
-  },
-  num_employees: {
-    type: DataTypes.INTEGER,
-    allowNull: false
+  {
+    sequelize,
+    modelName: 'department'
   }
-})
+)
+export { department }

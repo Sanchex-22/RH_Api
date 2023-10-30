@@ -1,26 +1,48 @@
-import { DataTypes } from 'sequelize'
-import { sequelize } from '../../config/db_config.mjs'
+import { DataTypes, Model } from 'sequelize'
+import sequelize from './dbConnect.mjs'
+import { user } from './usersModels.mjs'
+import { companies } from './companiesModels.mjs'
 
-sequelize.define('employee', {
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
-  },
-  user_id: {
-    type: DataTypes.INTEGER,
-    allowNull: true, // Opcional dependiendo de tus necesidades
-    references: {
-      model: 'users', // Nombre de la tabla a la que hace referencia
-      key: 'id' // Nombre de la clave primaria en la tabla persons
+class employee extends Model {}
+
+employee.init(
+  {
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true,
+      autoIncrement: true
+    },
+    user_id: {
+      type: DataTypes.UUID,
+      allowNull: true,
+      references: {
+        model: user,
+        key: 'id'
+      },
+      onDelete: 'CASCADE'
+    },
+    company_id: {
+      type: DataTypes.UUID,
+      allowNull: true,
+      references: {
+        model: companies,
+        key: 'id'
+      }
     }
   },
-  company_id: {
-    type: DataTypes.INTEGER,
-    allowNull: true, // Opcional dependiendo de tus necesidades
-    references: {
-      model: 'companies', // Nombre de la tabla a la que hace referencia
-      key: 'id' // Nombre de la clave primaria en la tabla persons
-    }
+  {
+    sequelize,
+    modelName: 'employee'
   }
+)
+employee.belongsTo(user, {
+  foreignKey: 'user_id',
+  onDelete: 'CASCADE'
 })
+employee.belongsTo(companies, {
+  foreignKey: 'company_id',
+  onDelete: 'CASCADE'
+})
+
+export { employee }
