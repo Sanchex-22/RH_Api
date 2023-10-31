@@ -8,8 +8,7 @@ department.init(
     id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
-      primaryKey: true,
-      autoIncrement: true
+      primaryKey: true
     },
     dp_name: {
       type: DataTypes.STRING(50),

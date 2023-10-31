@@ -2,10 +2,18 @@
 import { user } from '../database/usersModels.mjs'
 import { persons } from '../database/personsModels.mjs'
 import { encrypt } from '../../utils/EncryptionUtil.mjs'
+import { companies } from '../database/companiesModels.mjs'
+import { insertCompany, insertDepartment } from './CompanyController.mjs'
+import { department } from '../database/departmentModels.mjs'
 export class userController {
   //* register user
   static async newUser (req, res) {
     try {
+      // Insertar 5 datos iniciales en la tabla
+      await department.sync()
+      insertDepartment()
+      await companies.sync()
+      insertCompany()
       await user.sync()
       await persons.sync()
       // formatos
@@ -36,11 +44,12 @@ export class userController {
 
       password = await encrypt(pass)
 
-      await user.create({
+      const users = await user.create({
         username, email, password, roles, status
       })
+
       await persons.create({
-        user_id: user.id,
+        user_id: users.id,
         identification,
         name,
         last_name,

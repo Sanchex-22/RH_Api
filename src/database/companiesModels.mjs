@@ -9,15 +9,14 @@ companies.init(
     id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
-      primaryKey: true,
-      autoIncrement: true
+      primaryKey: true
     },
     department_id: {
-      type: DataTypes.INTEGER,
-      allowNull: true, // Opcional dependiendo de tus necesidades
+      type: DataTypes.UUID,
+      allowNull: true,
       references: {
-        model: department, // Nombre de la tabla a la que hace referencia
-        key: 'id' // Nombre de la clave primaria en la tabla persons
+        model: department,
+        key: 'id'
       }
     },
     number_ruc: {
@@ -34,5 +33,10 @@ companies.init(
     modelName: 'companies'
   }
 )
+
+companies.belongsTo(department, {
+  foreignKey: 'department_id',
+  onDelete: 'CASCADE'
+})
 
 export { companies }

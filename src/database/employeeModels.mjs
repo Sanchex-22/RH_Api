@@ -28,7 +28,8 @@ employee.init(
       references: {
         model: companies,
         key: 'id'
-      }
+      },
+      onDelete: 'CASCADE'
     }
   },
   {
