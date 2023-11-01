@@ -10,8 +10,7 @@ employee.init(
     id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
-      primaryKey: true,
-      autoIncrement: true
+      primaryKey: true
     },
     user_id: {
       type: DataTypes.UUID,
@@ -47,3 +46,4 @@ employee.belongsTo(companies, {
 })
 
 export { employee }
+await employee.sync()

@@ -25,3 +25,4 @@ department.init(
   }
 )
 export { department }
+department.sync()

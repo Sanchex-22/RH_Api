@@ -1,7 +1,6 @@
 import { DataTypes, Model } from 'sequelize'
 import sequelize from './dbConnect.mjs'
 import { department } from './departmentModels.mjs'
-
 class companies extends Model {}
 
 companies.init(
@@ -40,3 +39,5 @@ companies.belongsTo(department, {
 })
 
 export { companies }
+
+await companies.sync()

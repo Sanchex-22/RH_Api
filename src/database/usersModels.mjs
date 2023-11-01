@@ -36,3 +36,4 @@ user.init(
 )
 
 export { user }
+await user.sync()

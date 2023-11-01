@@ -2,27 +2,17 @@
 import { user } from '../database/usersModels.mjs'
 import { persons } from '../database/personsModels.mjs'
 import { encrypt } from '../../utils/EncryptionUtil.mjs'
-import { companies } from '../database/companiesModels.mjs'
-import { insertCompany, insertDepartment } from './CompanyController.mjs'
-import { department } from '../database/departmentModels.mjs'
+import { employee } from '../database/employeeModels.mjs'
 export class userController {
   //* register user
   static async newUser (req, res) {
     try {
-      // Insertar 5 datos iniciales en la tabla
-      await department.sync()
-      insertDepartment()
-      await companies.sync()
-      insertCompany()
-      await user.sync()
-      await persons.sync()
-      // formatos
       // const namePattern = /^[A-Za-z\s]+$/
       const passwordPattern = /^(?=.*[A-Z])(?=.*\d).{8,}$/
       // const cedulaPattern = /^\d{1,2}-\d{3,4}-\d{3,4}$/
       // TODO: Registrar Usuario, agregar validaciones
       // eslint-disable-next-line camelcase
-      let { username, email, pass, roles, status, identification, name, last_name, nationality } = req.body
+      let { username, email, pass, roles, status, identification, name, last_name, nationality, company_id, department_id } = req.body
       username = username.trim()
       email = email.trim()
       let password = pass.trim()
@@ -54,6 +44,12 @@ export class userController {
         name,
         last_name,
         nationality
+      })
+
+      await employee.create({
+        user_id: users.id,
+        company_id,
+        department_id
       })
 
       res.status(201).send({ message: 'Usuario registrado con éxito!' })

@@ -49,3 +49,4 @@ persons.belongsTo(user, {
 })
 
 export { persons }
+await persons.sync()
