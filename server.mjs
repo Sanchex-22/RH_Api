@@ -9,6 +9,8 @@ import { corsMiddleware } from './src/middleware/CorsMiddleware.mjs'
 // * import Routes
 import userRouter from './src/routes/userRoutes.mjs'
 import authRoutes from './src/routes/AuthRoutes.mjs'
+import companiesRouter from './src/routes/CompaniesRoutes.mjs'
+import departmentRouter from './src/routes/DepartmentRoutes.mjs'
 
 const app = express()
 
@@ -30,6 +32,8 @@ app.get('/', (req, res) => {
 })
 app.use('/api/user', userRouter)
 app.use('/api/auth', authRoutes)
+app.use('/api/company', companiesRouter)
+app.use('/api/department', departmentRouter)
 
 // * Start Server
 const PORT = process.env.PORT || 3001
