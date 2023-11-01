@@ -63,3 +63,16 @@
     console.log(sequelize)
     export default sequelize
 ```
+
+3. **ENDPOINTS**
+## API Endpoints
+<div>
+
+| Methods |             Urls           |                Actions 
+|-------------|:--------------------------:|-----------------------------------:|
+| **POST**    | /api/auth/login           | login an account
+
+
+
+
+</div>
