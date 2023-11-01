@@ -16,7 +16,8 @@ companies.init(
       references: {
         model: department,
         key: 'id'
-      }
+      },
+      onDelete: 'CASCADE'
     },
     number_ruc: {
       type: DataTypes.STRING(50),

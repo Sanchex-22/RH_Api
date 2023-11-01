@@ -13,10 +13,6 @@ department.init(
     dp_name: {
       type: DataTypes.STRING(50),
       allowNull: false
-    },
-    num_employees: {
-      type: DataTypes.INTEGER,
-      allowNull: false
     }
   },
   {
