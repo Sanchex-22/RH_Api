@@ -3,6 +3,8 @@ import { user } from '../database/usersModels.mjs'
 import { persons } from '../database/personsModels.mjs'
 import { encrypt } from '../../utils/EncryptionUtil.mjs'
 import { employee } from '../database/employeeModels.mjs'
+import { companies } from '../database/companiesModels.mjs'
+import { department } from '../database/departmentModels.mjs'
 export class userController {
   //* register user
   static async newUser (req, res) {
@@ -32,8 +34,13 @@ export class userController {
       const existingUserEmail = await user.findOne({ where: { email } })
       if (existingUserEmail) { return res.status(400).send({ message: 'Ya existe un usuario con este correo electrónico.' }) }
 
-      password = await encrypt(pass)
+      const existingCompany = await companies.findOne({ where: { id: company_id } })
+      if (!existingCompany) { return res.status(400).send({ message: 'La compañia seleccionada no existe' }) }
 
+      const existingDept = await department.findOne({ where: { id: department_id } })
+      if (!existingDept) { return res.status(400).send({ message: 'El departamento seleccionado No Existe' }) }
+
+      password = await encrypt(pass)
       const users = await user.create({
         username, email, password, roles, status
       })
