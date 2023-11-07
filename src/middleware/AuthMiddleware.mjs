@@ -1,35 +1,21 @@
-import { verify } from 'jsonwebtoken'
-import { secret } from '../config/auth.config.js'
-import { user } from '../models'
-// todo: hacer esto
-verifyToken = (req, res, next) => {
-  const token = req.session.token
-  console.log(token + 'aqui')
-  if (!token) {
-    return res.status(403).send({
-      message: 'No token provided!'
-    })
-  }
+import jwt from 'jsonwebtoken'
+export class AuthMiddlewire {
+  static Authorization = (request, response, next) => {
+    const Authorization = request.get('authorization')
+    let token = ''
 
-  verify(
-    token,
-    secret,
-    (err, decoded) => {
-      if (err) {
-        return res.status(401).send({
-          message: 'Unauthorized!'
-        })
-      }
-      req.userId = decoded.id // Almacena el ID de usuario decodificado en la solicitud
-      next()
+    if (Authorization && Authorization.toLowerCase().startsWith('bearer')) {
+      token = Authorization.substring(7)
     }
-  )
+    console.log(token)
+    const decodedToken = jwt.verify(token, process.env.SECRET_KEY)
+    console.log(decodedToken)
+    if (!token || !decodedToken.userToken.id) {
+      return response.status(401).json({ error: 'token invalido o ha expirado' })
+    }
+    const { id: userId } = decodedToken.userToken
+    request.userId = userId
+    console.log(userId)
+    next()
+  }
 }
-
-/* -- Objeto que contiene los middlewares relacionados con la autenticación y autorización JWT -- */
-const authJwt = {
-  verifyToken,
-}
-
-/* -- Exporta el objeto authJwt como un módulo -- */
-export default authJwt

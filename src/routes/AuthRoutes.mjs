@@ -1,4 +1,4 @@
-import { authController } from '../controllers/authController.mjs'
+import { authController } from '../controllers/AuthController.mjs'
 import { Router } from 'express'
 
 const authRoutes = Router()
