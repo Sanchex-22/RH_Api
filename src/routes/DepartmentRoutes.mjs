@@ -4,10 +4,10 @@ import { AuthMiddlewire } from '../middleware/AuthMiddleware.mjs'
 
 const DepartmentRouter = Router()
 
-DepartmentRouter.post('/newDepartment',AuthMiddlewire.Authorization, departmentsController.newDepartment)
-DepartmentRouter.get('/getDepartment/:id', departmentsController.getDepartment)
-DepartmentRouter.get('/getAllDepartment', departmentsController.getAllDepartment)
-DepartmentRouter.delete('/deleteDepartment/:id', departmentsController.deleteDepartment)
-DepartmentRouter.put('/editDepartment', departmentsController.editDepartment)
+DepartmentRouter.post('/newDepartment', AuthMiddlewire.Authorization, departmentsController.newDepartment)
+DepartmentRouter.get('/getDepartment/:id', AuthMiddlewire.Authorization, departmentsController.getDepartment)
+DepartmentRouter.get('/getAllDepartment', AuthMiddlewire.Authorization, departmentsController.getAllDepartment)
+DepartmentRouter.delete('/deleteDepartment/:id', AuthMiddlewire.Authorization, departmentsController.deleteDepartment)
+DepartmentRouter.put('/editDepartment', AuthMiddlewire.Authorization, departmentsController.editDepartment)
 
 export default DepartmentRouter
