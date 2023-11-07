@@ -1,10 +1,19 @@
+import { user } from '../database/usersModels.mjs'
+import { compare } from '../../utils/EncryptionUtil.mjs'
 export class authController {
   // * Login
   static async login (req, res) {
     try {
       // !Iniciar Session
+      const u = await user.findOne({ where: { email: req.body.email } })
+      if (!u) { return res.status(404).send({ message: 'Usuario no encontrado' }) }
 
-      return res.status(200).send()
+      const passwordIsValid = await compare(req.body.password, u.password)
+      console.log(passwordIsValid)
+      const pass = await user.findOne({ where: { password: passwordIsValid } })
+      if (pass === false) { return res.status(404).send({ message: 'Contraseña invalida' }) }
+
+      return res.status(200).send({ message: 'Bienvenido' })
     } catch (error) {
       return res.status(500).send({ message: 'Error interno del servidor', error })
     }

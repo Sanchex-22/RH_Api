@@ -5,6 +5,7 @@ import { encrypt } from '../../utils/EncryptionUtil.mjs'
 import { employee } from '../database/employeeModels.mjs'
 import { companies } from '../database/companiesModels.mjs'
 import { department } from '../database/departmentModels.mjs'
+
 export class userController {
   //* register user
   static async newUser (req, res) {
