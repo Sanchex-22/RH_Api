@@ -73,18 +73,15 @@
 Auth ROUTES
 | **POST**    | /api/auth/login            | login an account
 | **POST**    | /api/auth/logout           | logout an account
-
 USER ROUTES (ADMIN)
 | **POST**    | /api/user/newUser          | new an account
 | **DELETE**  | /api/user/deleteUser       | delete an account
 | **PUT**     | /api/user/editUser         | edit an account
-
 COMPANY ROUTES
 | **POST**    | /api/            | 
 | **DELETE**  | /api/            | 
 | **PUT**     | /api/            | 
 | **POST**    | /api/            | 
-
 DEPARTMENTS ROUTES
 | **POST**    | /api/            | 
 | **DELETE**  | /api/            | 
