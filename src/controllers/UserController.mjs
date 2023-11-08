@@ -113,6 +113,17 @@ export class userController {
   static async editUser (req, res) {
     try {
       // TODO: Hacer el editUser
+      const id = req.query.id
+      const u = await user.findByPk(id)
+
+      if (!u) {
+        return res.status(404).send({ message: 'Este usuario no existe' })
+      }
+      // Actualiza los datos del usuario con los valores proporcionados en el cuerpo de la solicitud
+      if (req.body.username) {
+        u.username = req.body.username
+      }
+      await u.save()
       res.status(200).send({ message: 'Usuario Editado con exito' })
     } catch (error) {
       res.status(500).send({ message: 'Error en el servidor' })
