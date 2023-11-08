@@ -70,10 +70,12 @@ export class userController {
   static async getProfile (req, res) {
     try {
       // TODO: hacer el getPerfile
-      res.status(200).send()
+      console.log(req.query.id)
+      const User = await user.findOne({ where: { id: req.query.id } })
+      if (!User) { return res.status(404).send({ message: 'Perfil no encontrado' }) }
+
+      res.status(200).send({ id: User.id, name: User.username, rol: User.roles })
     } catch (error) {
-      console.error('Error al traer el perfil de usuario: ', error)
-      console.log(error)
       return res.status(500).send({ message: 'Error en el servidor.' })
     }
   }
@@ -81,7 +83,6 @@ export class userController {
   // * Traer a todos los usuarios
   static async getAllUsers (req, res) {
     try {
-      // TODO: Hacer el getAllUser
       const User = await user.findAll()
       res.status(200).json(User)
     } catch (error) {
@@ -94,7 +95,14 @@ export class userController {
     console.log(req.body.id)
     try {
       // TODO: Hacer el deleteUser
-      console.log('Usuario eliminado correctamente')
+      const u = await user.findByPk(req.body.id)
+      if (!u) { return res.status(404).send({ message: 'Usuario no encontrado o no existe' }) }
+      // eliminacion en cascada
+      await Promise.all([
+        employee.destroy({ where: { id: u.id } }),
+        persons.destroy({ where: { id: u.id } }),
+        u.destroy()
+      ])
       res.status(201).send({ message: 'Usuario eliminado con éxito!' })
     } catch (error) {
       res.status(500).send({ message: 'Error en el servidor' })
