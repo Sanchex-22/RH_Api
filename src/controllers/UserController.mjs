@@ -15,7 +15,7 @@ export class userController {
       // const cedulaPattern = /^\d{1,2}-\d{3,4}-\d{3,4}$/
       // TODO: Registrar Usuario, agregar validaciones
       // eslint-disable-next-line camelcase
-      let { username, email, pass, roles, status, identification, name, last_name, nationality, company_id, department_id } = req.body
+      let { username, email, pass, roles, status, identification, name, last_name, nationality, company_id, department_id, contract_id, contractype_id, postion_id } = req.body
       username = username.trim()
       email = email.trim()
       let password = pass.trim()
@@ -57,7 +57,10 @@ export class userController {
       await employee.create({
         user_id: users.id,
         company_id,
-        department_id
+        department_id,
+        contract_id,
+        contractype_id,
+        postion_id
       })
 
       res.status(201).send({ message: 'Usuario registrado con éxito!' })
@@ -70,11 +73,10 @@ export class userController {
   static async getProfile (req, res) {
     try {
       // TODO: hacer el getPerfile
-      console.log(req.query.id)
       const User = await user.findOne({ where: { id: req.query.id } })
       if (!User) { return res.status(404).send({ message: 'Perfil no encontrado' }) }
 
-      res.status(200).send({ id: User.id, name: User.username, rol: User.roles })
+      return res.status(200).send({ id: User.id, name: User.username, rol: User.roles })
     } catch (error) {
       return res.status(500).send({ message: 'Error en el servidor.' })
     }
