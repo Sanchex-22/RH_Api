@@ -42,6 +42,7 @@ export class userController {
       if (!existingDept) { return res.status(400).send({ message: 'El departamento seleccionado No Existe' }) }
 
       password = await encrypt(pass)
+
       const users = await user.create({
         username, email, password, roles, status
       })

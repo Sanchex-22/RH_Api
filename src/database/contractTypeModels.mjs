@@ -17,7 +17,7 @@ contractTypes.init(
   },
   {
     sequelize,
-    modelName: 'contract'
+    modelName: 'contractTypes'
   }
 )
 export { contractTypes }

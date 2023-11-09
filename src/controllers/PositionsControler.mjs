@@ -4,13 +4,10 @@ import { position } from '../database/positionsModels.mjs'
 export class positionsController {
   static async newPositions (req, res) {
     try {
-      const { dp_name } = req.body
-      // TODO: Hacer el create company
-      const existingDept = await position.findOne({ where: { dp_name } })
-      if (existingDept) { return res.status(400).send({ message: 'Ya existe un departamento con ese nombre ' }) }
+      const { position_name } = req.body
 
       await position.create({
-        dp_name
+        position_name
       })
       res.status(201).send({ message: 'Cargo registrado con éxito!' })
     } catch (error) {

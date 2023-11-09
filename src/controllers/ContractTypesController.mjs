@@ -3,17 +3,14 @@ import { contractTypes } from '../database/contractTypeModels.mjs'
 export class contractTypesController {
   static async newContractTypes (req, res) {
     try {
-      const { name } = req.body
-      // TODO: Hacer el create company
-      const existingDept = await contractTypes.findOne({ where: { name } })
-      if (existingDept) { return res.status(400).send({ message: 'Ya existe un departamento con ese nombre ' }) }
-
-      await contractTypes.create({
-        name
+      const name = req.body.contract_name
+      const ct = await contractTypes.create({
+        contract_name: name
       })
-      res.status(201).send({ message: 'tipo de contrato registrado con éxito!' })
+      if (!ct) { return res.status(404).send({ message: 'el tipo de contrato se creo' }) }
+      return res.status(201).send({ message: 'tipo de contrato registrado con éxito!' })
     } catch (error) {
-      return res.status(500).send({ message: 'error en el servidor' })
+      return res.status(500).send({ message: 'error en el servidor', error })
     }
   }
 

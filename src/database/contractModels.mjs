@@ -30,9 +30,13 @@ contract.init(
       },
       onDelete: 'CASCADE'
     },
+    salary: {
+      type: DataTypes.DECIMAL,
+      allowNull: false
+    },
     start_date: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: true
     },
     end_date: {
       type: DataTypes.DATE,

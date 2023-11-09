@@ -1,17 +1,29 @@
+/* eslint-disable camelcase */
 import { contract } from '../database/contractModels.mjs'
+import { contractTypes } from '../database/contractTypeModels.mjs'
+import { position } from '../database/positionsModels.mjs'
 
 export class contractController {
   static async newContract (req, res) {
     try {
-      const { name } = req.body
+      const { type_id, position_id, salary, start_date, end_date } = req.body
+      console.log(type_id, " & ", position_id)
       // TODO: Hacer el create company
-      const existingDept = await contract.findOne({ where: { name } })
-      if (existingDept) { return res.status(400).send({ message: 'Ya existe un contrato con ese nombre ' }) }
+      const existingcontactype = await contractTypes.findOne({ where: { id: type_id } })
+      if (!existingcontactype) { return res.status(400).send({ message: 'no existe este tipo de contrato con ese nombre ' }) }
 
-      await contract.create({
-        name
+      const existingposition = await position.findOne({ where: { id: position_id } })
+      if (!existingposition) { return res.status(400).send({ message: 'no existe esta posicion ' }) }
+
+      const c = await contract.create({
+        type_id,
+        position_id,
+        salary,
+        start_date,
+        end_date
       })
-      res.status(201).send({ message: 'El contrato registrado con éxito!' })
+      if (!c) { return res.status(201).send({ message: 'El contrato no se registro' }) }
+      return res.status(201).send({ message: 'El contrato registrado con éxito!' })
     } catch (error) {
       return res.status(500).send({ message: 'error en el servidor' })
     }
@@ -28,7 +40,7 @@ export class contractController {
         d.dp_name = req.body.dp_name
       }
       await d.save()
-      res.status(200).send({ message: 'Contrato Editado con exito' })
+      return res.status(200).send({ message: 'Contrato Editado con exito' })
     } catch (error) {
       return res.status(500).send({ message: 'error en el servidor' })
     }
@@ -42,7 +54,7 @@ export class contractController {
       await Promise.all([
         d.destroy()
       ])
-      res.status(201).send({ message: 'Contrato eliminado con éxito!' })
+      return res.status(201).send({ message: 'Contrato eliminado con éxito!' })
     } catch (error) {
       return res.status(500).send({ message: 'error en el servidor' })
     }
