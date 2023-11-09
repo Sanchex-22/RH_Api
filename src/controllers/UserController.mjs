@@ -58,7 +58,7 @@ export class userController {
       await employee.create({
         user_id: users.id,
         company_id,
-        department_id,
+        // department_id,
         contract_id,
         contractype_id,
         postion_id

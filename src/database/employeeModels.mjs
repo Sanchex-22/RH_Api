@@ -35,7 +35,7 @@ employee.init(
       type: DataTypes.UUID,
       allowNull: true,
       references: {
-        model: companies,
+        model: contract,
         key: 'id'
       },
       onDelete: 'CASCADE'
