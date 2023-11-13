@@ -1,12 +1,14 @@
 import cors from 'cors'
 
 const corsMiddleware = cors({
-  origin: 'http://localhost:3001', // origen de tu aplicación
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  origin: 'http://localhost:5173', // origin of your application
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  credentials: true // Permite el envío de cookies en las solicitudes
+  credentials: true // Allows cookies to be sent in requests
 })
 
 export { corsMiddleware }
+
 /*
  require('dotenv').config({ path: './.env' })
 
