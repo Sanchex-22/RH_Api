@@ -21,7 +21,7 @@ export class authController {
       }
       const token = jwt.sign({ userToken }, process.env.SECRET_KEY, { expiresIn: '7d' })
 
-      return res.status(200).send({ message: 'Bienvenido', token })
+      return res.status(200).send({ message: 'Bienvenido', userToken, token })
     } catch (error) {
       return res.status(500).send({ message: 'Error interno del servidor', error })
     }

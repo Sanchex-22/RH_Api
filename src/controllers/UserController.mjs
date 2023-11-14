@@ -74,7 +74,8 @@ export class userController {
   static async getProfile (req, res) {
     try {
       // TODO: hacer el getPerfile
-      const User = await user.findOne({ where: { id: req.query.id } })
+      console.log(req.params)
+      const User = await user.findOne({ where: { id: req.params.id } })
       if (!User) { return res.status(404).send({ message: 'Perfil no encontrado' }) }
 
       return res.status(200).send({ id: User.id, name: User.username, rol: User.roles })
