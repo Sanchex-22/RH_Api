@@ -5,10 +5,12 @@ import { encrypt } from '../../utils/EncryptionUtil.mjs'
 import { employee } from '../database/employeeModels.mjs'
 import { companies } from '../database/companiesModels.mjs'
 import { department } from '../database/departmentModels.mjs'
+import sequelize from '../database/dbConnect.mjs'
 
 export class userController {
   //* register user
   static async newUser (req, res) {
+    const transaction = await sequelize.transaction()
     try {
       // const namePattern = /^[A-Za-z\s]+$/
       const passwordPattern = /^(?=.*[A-Z])(?=.*\d).{8,}$/
@@ -45,7 +47,7 @@ export class userController {
 
       const users = await user.create({
         username, email, password, roles, status
-      })
+      }, { transaction })
 
       await persons.create({
         user_id: users.id,
@@ -53,7 +55,7 @@ export class userController {
         name,
         last_name,
         nationality
-      })
+      }, { transaction })
 
       await employee.create({
         user_id: users.id,
@@ -62,10 +64,11 @@ export class userController {
         contract_id,
         contractype_id,
         postion_id
-      })
-
+      }, { transaction })
+      await transaction.commit()
       res.status(201).send({ message: 'Usuario registrado con éxito!' })
     } catch (error) {
+      await transaction.rollback()
       res.status(500).send({ message: 'Error interno del servidor', error })
     }
   }
@@ -74,11 +77,27 @@ export class userController {
   static async getProfile (req, res) {
     try {
       // TODO: hacer el getPerfile
-      console.log(req.params)
-      const User = await user.findOne({ where: { id: req.params.id } })
+      const id = req.params.id
+      const User = await user.findOne({ where: { id } })
       if (!User) { return res.status(404).send({ message: 'Perfil no encontrado' }) }
 
-      return res.status(200).send({ id: User.id, name: User.username, rol: User.roles })
+      const p = await persons.findOne({ where: { user_id: id } })
+      if (!p) { return res.status(404).send({ message: 'Perfil no encontrado' }) }
+
+      return res.status(200).send({
+        // id: User.id,
+        user_name: User.username,
+        rol: User.roles,
+        email: User.email,
+        status: User.status,
+        person_data:
+          {
+            name: p.name,
+            last_name: p.last_name,
+            identification: p.identification,
+            nationality: p.nationality
+          }
+      })
     } catch (error) {
       return res.status(500).send({ message: 'Error en el servidor.' })
     }
@@ -87,8 +106,17 @@ export class userController {
   // * Traer a todos los usuarios
   static async getAllUsers (req, res) {
     try {
-      const User = await user.findAll()
-      res.status(200).json(User)
+      const u = await persons.findAndCountAll({
+        include: [
+          { model: user, required: false, attributes: ['id', 'username', 'email'] }
+        ],
+        limit: 3
+      })
+      if (!u) { return res.status(404).send({ message: 'usuarios no encontrados' }) }
+
+      return res.status(200).send({
+        u
+      })
     } catch (error) {
       return res.status(500).send({ message: 'error en el servidor' })
     }
@@ -96,9 +124,9 @@ export class userController {
 
   // * Elimara a un usuario
   static async deleteUser (req, res) {
-    console.log(req.body.id)
     try {
       // TODO: Hacer el deleteUser
+      console.log(req.body.id)
       const u = await user.findByPk(req.body.id)
       if (!u) { return res.status(404).send({ message: 'Usuario no encontrado o no existe' }) }
       // eliminacion en cascada
