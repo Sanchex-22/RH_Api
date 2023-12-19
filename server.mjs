@@ -15,6 +15,8 @@ import ContractRouter from './src/routes/ContractRoutes.mjs'
 import ContractTypesRouter from './src/routes/ContractTypesRoutes.mjs'
 import PositionsRouter from './src/routes/PositionsRoutes.mjs'
 import EmployeeRouter from './src/routes/EmployeeRoutes.mjs'
+import VacationsRouter from './src/routes/VacationsRoutes.mjs'
+import VacationsFormRouter from './src/routes/VacationsFormRoutes.mjs'
 
 const app = express()
 
@@ -42,9 +44,13 @@ app.use('/api/department', departmentRouter)
 app.use('/api/contract', ContractRouter)
 app.use('/api/contractTypes', ContractTypesRouter)
 app.use('/api/positions', PositionsRouter)
+app.use('/api/vacations', VacationsRouter)
+app.use('/api/vacationsForm', VacationsFormRouter)
 
 // * Start Server
 const PORT = process.env.PORT || 3001
-app.listen(PORT, async () => {
-  console.log(`Server is running on port ${PORT}.`)
+const HOST = '0.0.0.0'
+
+app.listen(PORT, HOST, async () => {
+  console.log(`Server is running on http://${HOST}:${PORT}`)
 })

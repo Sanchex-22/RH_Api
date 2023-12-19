@@ -52,6 +52,9 @@ export class companiesController {
   static async getAllCompany (req, res) {
     try {
       // TODO: Hacer el create company
+      const c = await companies.findAll()
+      if (!c) { return res.status(404).send({ message: 'Compañia no encontrada' }) }
+      return res.status(200).json(c)
     } catch (error) {
       return res.status(500).send({ message: 'error en el servidor' })
     }

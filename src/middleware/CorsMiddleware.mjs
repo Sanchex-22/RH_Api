@@ -2,9 +2,9 @@ import cors from 'cors'
 
 const corsMiddleware = cors({
   allowedHeaders: ['Content-Type', 'Authorization'],
-  origin: 'http://localhost:5173', // origin of your application
+  origin: ['http://localhost:5173', 'http://0.0.0.0:5173', 'http://192.168.0.77:5173'],
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  credentials: true // Allows cookies to be sent in requests
+  credentials: true
 })
 
 export { corsMiddleware }

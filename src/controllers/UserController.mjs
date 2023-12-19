@@ -6,22 +6,27 @@ import { employee } from '../database/employeeModels.mjs'
 import { companies } from '../database/companiesModels.mjs'
 import { department } from '../database/departmentModels.mjs'
 import sequelize from '../database/dbConnect.mjs'
+import { contract } from '../database/contractModels.mjs'
 
 export class userController {
   //* register user
   static async newUser (req, res) {
     const transaction = await sequelize.transaction()
     try {
+      const normalizeRole = (role) => {
+        return role.charAt(0).toUpperCase() + role.slice(1).toLowerCase()
+      }
       // const namePattern = /^[A-Za-z\s]+$/
       const passwordPattern = /^(?=.*[A-Z])(?=.*\d).{8,}$/
       // const cedulaPattern = /^\d{1,2}-\d{3,4}-\d{3,4}$/
       // TODO: Registrar Usuario, agregar validaciones
       // eslint-disable-next-line camelcase
-      let { username, email, pass, roles, status, identification, name, last_name, nationality, company_id, department_id, contract_id, contractype_id, postion_id } = req.body
+      let { username, email, pass, roles, status, identification, name, last_name, nationality, company_id, department_id, contract_id, contractype_id, postion_id, type_id, position_id, salary, start_date, end_date } = req.body
       username = username.trim()
       email = email.trim()
       let password = pass.trim()
-      roles = roles === '' ? 'user' : roles
+      roles = roles === '' ? 'User' : roles
+      roles = normalizeRole(roles)
 
       if (!passwordPattern.test(password)) {
         return res.status(404).send({ message: 'La contraseña debe contener al menos 8 caracteres, 1 letra mayúscula y 1 número.' })
@@ -57,11 +62,19 @@ export class userController {
         nationality
       }, { transaction })
 
+      const c = await contract.create({
+        type_id,
+        position_id,
+        salary,
+        start_date,
+        end_date
+      })
+
       await employee.create({
         user_id: users.id,
         company_id,
         // department_id,
-        contract_id,
+        contract_id: c.id,
         contractype_id,
         postion_id
       }, { transaction })
@@ -125,8 +138,6 @@ export class userController {
   // * Elimara a un usuario
   static async deleteUser (req, res) {
     try {
-      // TODO: Hacer el deleteUser
-      console.log(req.body.id)
       const u = await user.findByPk(req.body.id)
       if (!u) { return res.status(404).send({ message: 'Usuario no encontrado o no existe' }) }
       // eliminacion en cascada
