@@ -7,7 +7,7 @@ export class contractController {
   static async newContract (req, res) {
     try {
       const { type_id, position_id, salary, start_date, end_date } = req.body
-      console.log(type_id, " & ", position_id)
+      console.log(type_id, ' & ', position_id)
       // TODO: Hacer el create company
       const existingcontactype = await contractTypes.findOne({ where: { id: type_id } })
       if (!existingcontactype) { return res.status(400).send({ message: 'no existe este tipo de contrato con ese nombre ' }) }

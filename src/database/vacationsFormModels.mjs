@@ -11,7 +11,7 @@ vacationsForm.init(
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true
     },
-    title: {
+    tittle: {
       type: DataTypes.STRING(50),
       allowNull: false
     },
@@ -33,7 +33,7 @@ vacationsForm.init(
     },
     aproved_by: {
       type: DataTypes.STRING(50),
-      allowNull: false
+      allowNull: true
     },
     status: {
       type: DataTypes.STRING(50),
