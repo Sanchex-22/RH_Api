@@ -87,12 +87,13 @@ export class vacationsFormController {
       description = description === '' ? form.description : description
       start_date = start_date === '' ? form.start_date : start_date
       end_date = end_date === '' ? form.end_date : end_date
+
       if (!form) { return res.status(404).send({ message: 'formulario no encontraedo o no existe' }) }
       const inicio = new Date(form.start_date)
       const final = new Date(form.end_date)
       const timeDifference = final - inicio
       const request_days = Math.floor(timeDifference / (1000 * 60 * 60 * 24))
-      console.log(req.body + ' y ' + req.params)
+
       await vacationsForm.update(
         {
           status,

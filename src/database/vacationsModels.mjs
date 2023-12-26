@@ -11,11 +11,17 @@ vacations.init(
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true
     },
-    remining_days: {
+    accumulated_vacations: {
       type: DataTypes.INTEGER
     },
-    total_request: {
+    aproved_forms: {
       type: DataTypes.INTEGER
+    },
+    rejected_forms: {
+      type: DataTypes.INTEGER
+    },
+    status: {
+      type: DataTypes.BOOLEAN
     },
     user_id: {
       type: DataTypes.UUID,
