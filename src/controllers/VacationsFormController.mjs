@@ -7,60 +7,70 @@ export class vacationsFormController {
   static async newVacationsForm (req, res) {
     try {
       const date = new Date()
-      const defaultValues = { type: 'vacaciones', status: 'no aprobado', approved_by: '', view: 'false' }
+      const fecha_actual = new Date()
+      const defaultValues = { type: 'vacaciones', status: 'no aprobado', approved_by: '', view: 'false', comment: '' }
       const { send_by, send_to, tittle, description, start_date, end_date } = req.body
 
-      // calculo de dias
-      const inicio = new Date(start_date)
-      const final = new Date(end_date)
-      const timeDifference = final - inicio
+      // Esto viene de la BD
+      const fecha_inicio_emp = new Date('2023-01-22T15:38:35.836Z')
 
-      // Calcula días y horas
-      const request_days = Math.floor(timeDifference / (1000 * 60 * 60 * 24))
-      const request_hour = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+      const fecha_fin_emp = new Date(fecha_inicio_emp)
+      fecha_fin_emp.setMonth(fecha_fin_emp.getMonth() + 11)
+      console.log(fecha_actual + ' y ' + fecha_fin_emp)
+      if ((fecha_actual >= fecha_fin_emp)) {
+        // calculo de dias
+        const inicio = new Date(start_date)
+        const final = new Date(end_date)
+        const timeDifference = final - inicio
 
-      console.log(`Días de diferencia: ${request_days} días`)
-      console.log(`Horas de diferencia: ${request_hour} horas`)
+        // Calcula días y horas
+        const request_days = Math.floor(timeDifference / (1000 * 60 * 60 * 24))
+        const request_hour = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
 
-      // verficaciion si el usuario puede pedir vacaciones.
-      const r = await employee.findOne({ where: { user_id: send_by } })
-      const contrato_id = r.contract_id
+        // console.log(`Días de diferencia: ${request_days} días`)
+        console.log(`Horas de diferencia: ${request_hour} horas`)
 
-      const ObtenerInformacionEmpleadoContrato = async (send_by, contrato_id) => {
-        const result = await sequelize.query(
-          'CALL ObtenerInformacionEmpleadoContrato(:send_by, :contrato_id)',
-          {
-            replacements: { send_by, contrato_id },
-            type: Sequelize.QueryTypes.SELECT
-          }
-        )
-        return result
+        // verficaciion si el usuario puede pedir vacaciones.
+        const r = await employee.findOne({ where: { user_id: send_by } })
+        const contrato_id = r.contract_id
+
+        const ObtenerInformacionEmpleadoContrato = async (send_by, contrato_id) => {
+          const result = await sequelize.query(
+            'CALL ObtenerInformacionEmpleadoContrato(:send_by, :contrato_id)',
+            {
+              replacements: { send_by, contrato_id },
+              type: Sequelize.QueryTypes.SELECT
+            }
+          )
+          return result
+        }
+        ObtenerInformacionEmpleadoContrato(send_by, contrato_id)
+          .then(result => {
+            console.log(result)
+          })
+          .catch(error => {
+            console.error(error)
+          })
+
+        console.log(ObtenerInformacionEmpleadoContrato)
+
+        await vacationsForm.create({
+          status: defaultValues.status,
+          approved_by: defaultValues.approved_by,
+          view: defaultValues.view,
+          send_by,
+          send_to,
+          send_date: date,
+          tittle,
+          description,
+          start_date,
+          end_date,
+          request_days,
+          comment: defaultValues.comment
+        })
+        return res.status(201).send({ message: 'Formulario Enviado a ' + send_by + ' con éxito!' })
       }
-      ObtenerInformacionEmpleadoContrato(send_by, contrato_id)
-        .then(result => {
-          console.log(result)
-        })
-        .catch(error => {
-          console.error(error)
-        })
-
-      console.log(ObtenerInformacionEmpleadoContrato)
-
-      await vacationsForm.create({
-        type: defaultValues.type,
-        status: defaultValues.status,
-        approved_by: defaultValues.approved_by,
-        view: defaultValues.view,
-        send_by,
-        send_to,
-        send_date: date,
-        tittle,
-        description,
-        start_date,
-        end_date,
-        request_days
-      })
-      res.status(201).send({ message: 'Formulario Enviado a ' + send_by + ' con éxito!' })
+      return res.status(201).send({ message: 'No puede pedir vacaciones antes de los 11 meses ' })
     } catch (error) {
       return res.status(500).send({ message: 'error en el servidor', error })
     }
@@ -68,7 +78,35 @@ export class vacationsFormController {
 
   static async editVacationsForm (req, res) {
     try {
-      res.status(200).send({ message: 'Cargo Editado con exito' })
+      let { status, send_to, tittle, description, start_date, end_date } = req.body
+      const form = await vacationsForm.findOne({ where: { id: req.params.id } })
+      // validacion de NULL
+      status = status === '' ? form.status : status
+      send_to = send_to === '' ? form.send_to : send_to
+      tittle = tittle === '' ? form.tittle : tittle
+      description = description === '' ? form.description : description
+      start_date = start_date === '' ? form.start_date : start_date
+      end_date = end_date === '' ? form.end_date : end_date
+      if (!form) { return res.status(404).send({ message: 'formulario no encontraedo o no existe' }) }
+      const inicio = new Date(form.start_date)
+      const final = new Date(form.end_date)
+      const timeDifference = final - inicio
+      const request_days = Math.floor(timeDifference / (1000 * 60 * 60 * 24))
+      console.log(req.body + ' y ' + req.params)
+      await vacationsForm.update(
+        {
+          status,
+          send_to,
+          tittle,
+          description,
+          start_date,
+          end_date,
+          request_days
+        },
+        { where: { id: req.params.id } }
+      )
+
+      return res.status(200).send({ message: 'Formulario Editado con exito' })
     } catch (error) {
       return res.status(500).send({ message: 'error en el servidor' })
     }
@@ -76,7 +114,10 @@ export class vacationsFormController {
 
   static async deleteVacationsForm (req, res) {
     try {
-      res.status(201).send({ message: 'Cargo eliminado con éxito!' })
+      const form = await vacationsForm.findOne({ where: { id: req.body.id } })
+      if (!form) { return res.status(404).send({ message: 'formulario no encontrado o no existe' }) }
+      await vacationsForm.destroy({ where: { id: req.body.id } })
+      res.status(201).send({ message: 'Formulario eliminado con éxito!' })
     } catch (error) {
       return res.status(500).send({ message: 'error en el servidor' })
     }
@@ -84,7 +125,10 @@ export class vacationsFormController {
 
   static async getVacationsForm (req, res) {
     try {
-      return res.status(200).json('')
+      console.log(req)
+      const form = await vacationsForm.findOne({ where: { id: req.params.id } })
+      if (!form) { return res.status(404).send({ message: 'El formulario no fue encontrado o no existe' }) }
+      return res.status(200).json(form)
     } catch (error) {
       return res.status(500).send({ message: 'error en el servidor' })
     }
@@ -92,7 +136,44 @@ export class vacationsFormController {
 
   static async getAllVacationsForm (req, res) {
     try {
-      return res.status(200).json('')
+      const form = await vacationsForm.findAll({
+        order: [['createdAt', 'DESC']]
+      })
+      if (!form) { return res.status(404).send({ message: 'El formulario no fue encontrado o no existe' }) }
+      return res.status(200).json(form)
+    } catch (error) {
+      return res.status(500).send({ message: 'error en el servidor' })
+    }
+  }
+
+  // Admin
+  static async viewVacationsForm (req, res) {
+    try {
+      const formExist = await vacationsForm.update({ view: true }, { where: { id: req.params.id } })
+      if (!formExist) { return res.status(404).send({ message: 'El formulario seleccionado no fue encontrado o no existe' }) }
+      return res.status(200).send({ message: 'A cambiado el estado a en visto' })
+    } catch (error) {
+      return res.status(500).send({ message: 'error en el servidor' })
+    }
+  }
+
+  static async revisionVacationsForm (req, res) {
+    try {
+      console.log(req.body)
+      let a_days = req.body.aproved_days
+      a_days = a_days === '' ? '0' : a_days
+      const formExist = await vacationsForm.update(
+        {
+          aproved_by: req.body.aproved_by,
+          comment: req.body.comment,
+          status: req.body.status,
+          aproved_days: a_days
+        },
+        { where: { id: req.body.id } })
+      if (!formExist) {
+        return res.status(404).send({ message: 'El formulario seleccionado no fue encontrado o no existe' })
+      }
+      return res.status(200).send({ message: 'A cambiado el estado del formulario a ' })
     } catch (error) {
       return res.status(500).send({ message: 'error en el servidor' })
     }

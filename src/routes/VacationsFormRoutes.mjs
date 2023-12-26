@@ -5,9 +5,10 @@ import { AuthMiddlewire } from '../middleware/AuthMiddleware.mjs'
 const VacationsFormRouter = Router()
 
 VacationsFormRouter.post('/newVacationsForm', AuthMiddlewire.Authorization, vacationsFormController.newVacationsForm)
-VacationsFormRouter.get('/getVactionsForm/:id', AuthMiddlewire.Authorization, vacationsFormController.getVacationsForm)
+VacationsFormRouter.get('/getVacationsForm/:id', AuthMiddlewire.Authorization, vacationsFormController.getVacationsForm)
 VacationsFormRouter.get('/getAllVacationsForm', AuthMiddlewire.Authorization, vacationsFormController.getAllVacationsForm)
 VacationsFormRouter.delete('/deleteVacationsForm', AuthMiddlewire.Authorization, vacationsFormController.deleteVacationsForm)
-VacationsFormRouter.put('/editVacations/:id', AuthMiddlewire.Authorization, vacationsFormController.editVacationsForm)
-
+VacationsFormRouter.put('/editVacationsForm/:id', AuthMiddlewire.Authorization, vacationsFormController.editVacationsForm)
+VacationsFormRouter.put('/viewVacationsForms/:id', AuthMiddlewire.Authorization, vacationsFormController.viewVacationsForm)
+VacationsFormRouter.put('/revisionVacationsForm', AuthMiddlewire.Authorization, vacationsFormController.revisionVacationsForm)
 export default VacationsFormRouter

@@ -42,6 +42,10 @@ vacationsForm.init(
     view: {
       type: DataTypes.BOOLEAN
     },
+    comment: {
+      type: DataTypes.STRING(50),
+      allowNull: true
+    },
     send_by: {
       type: DataTypes.UUID,
       allowNull: true,
