@@ -6,6 +6,7 @@ import { companies } from '../database/companiesModels.mjs'
 import { department } from '../database/departmentModels.mjs'
 import sequelize from '../database/dbConnect.mjs'
 import { contract } from '../database/contractModels.mjs'
+import { vacations } from '../database/vacationsModels.mjs'
 
 export class userController {
   //* register user
@@ -73,9 +74,18 @@ export class userController {
         start_date,
         end_date
       }, { transaction })
+
+      const v = await vacations.create({
+        user_id: users.id,
+        accumulated_vacations: '0',
+        aproved_forms: '0',
+        rejected_forms: '0',
+        status: '0'
+      }, { transaction })
+
       if (!c) { return res.status(404).send({ message: 'No trajo nada' }) }
       await transaction.commit()
-      res.status(201).send({ message: 'Usuario registrado con éxito!' })
+      res.status(201).send({ message: 'Usuario registrado con éxito!' + v })
     } catch (error) {
       await transaction.rollback()
       res.status(500).send({ message: 'Error interno del servidor', error })
@@ -138,6 +148,7 @@ export class userController {
       if (!u) { return res.status(404).send({ message: 'Usuario no encontrado o no existe' }) }
       // eliminacion en cascada
       await Promise.all([
+        contract.destroy({ where: { id: u.id } }),
         persons.destroy({ where: { id: u.id } }),
         u.destroy()
       ])

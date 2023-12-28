@@ -20,7 +20,7 @@ export class authController {
         username: u.username,
         roles: u.roles
       }
-      const token = jwt.sign({ userToken }, process.env.SECRET_KEY, { expiresIn: '7d' })
+      const token = jwt.sign({ userToken }, process.env.SECRET_KEY, { expiresIn: '30d' })
 
       return res.status(200).send({ message: 'Bienvenido', userToken, token })
     } catch (error) {
