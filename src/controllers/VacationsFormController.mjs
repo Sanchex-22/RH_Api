@@ -2,7 +2,7 @@
 import { Sequelize } from 'sequelize'
 import { vacationsForm } from '../database/vacationsFormModels.mjs'
 import sequelize from '../database/dbConnect.mjs'
-import { employee } from '../database/employeeModels.mjs'
+import { contract } from '../database/contractModels.mjs'
 export class vacationsFormController {
   static async newVacationsForm (req, res) {
     try {
@@ -31,28 +31,9 @@ export class vacationsFormController {
         console.log(`Horas de diferencia: ${request_hour} horas`)
 
         // verficaciion si el usuario puede pedir vacaciones.
-        const r = await employee.findOne({ where: { user_id: send_by } })
-        const contrato_id = r.contract_id
+        const contrato = await contract.findOne({ where: { user_id: send_by } })
 
-        const ObtenerInformacionEmpleadoContrato = async (send_by, contrato_id) => {
-          const result = await sequelize.query(
-            'CALL ObtenerInformacionEmpleadoContrato(:send_by, :contrato_id)',
-            {
-              replacements: { send_by, contrato_id },
-              type: Sequelize.QueryTypes.SELECT
-            }
-          )
-          return result
-        }
-        ObtenerInformacionEmpleadoContrato(send_by, contrato_id)
-          .then(result => {
-            console.log(result)
-          })
-          .catch(error => {
-            console.error(error)
-          })
-
-        console.log(ObtenerInformacionEmpleadoContrato)
+        console.log('contrato id' + contrato.id + ' fecha de inicio del empleado -> ' + contrato.start_date)
 
         await vacationsForm.create({
           status: defaultValues.status,

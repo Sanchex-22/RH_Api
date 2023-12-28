@@ -2,7 +2,6 @@
 import { user } from '../database/usersModels.mjs'
 import { persons } from '../database/personsModels.mjs'
 import { encrypt } from '../../utils/EncryptionUtil.mjs'
-import { employee } from '../database/employeeModels.mjs'
 import { companies } from '../database/companiesModels.mjs'
 import { department } from '../database/departmentModels.mjs'
 import sequelize from '../database/dbConnect.mjs'
@@ -63,21 +62,18 @@ export class userController {
       }, { transaction })
 
       const c = await contract.create({
+        user_id: users.id,
         type_id,
         position_id,
+        company_id,
+        department_id,
+        contractype_id,
+        postion_id,
         salary,
         start_date,
         end_date
-      })
-
-      await employee.create({
-        user_id: users.id,
-        company_id,
-        // department_id,
-        contract_id: c.id,
-        contractype_id,
-        postion_id
       }, { transaction })
+      if (!c) { return res.status(404).send({ message: 'No trajo nada' }) }
       await transaction.commit()
       res.status(201).send({ message: 'Usuario registrado con éxito!' })
     } catch (error) {
@@ -142,7 +138,6 @@ export class userController {
       if (!u) { return res.status(404).send({ message: 'Usuario no encontrado o no existe' }) }
       // eliminacion en cascada
       await Promise.all([
-        employee.destroy({ where: { id: u.id } }),
         persons.destroy({ where: { id: u.id } }),
         u.destroy()
       ])

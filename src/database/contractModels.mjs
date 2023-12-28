@@ -2,6 +2,9 @@ import { DataTypes, Model } from 'sequelize'
 import sequelize from './dbConnect.mjs'
 import { contractTypes } from './contractTypeModels.mjs'
 import { position } from './positionsModels.mjs'
+import { user } from './usersModels.mjs'
+import { department } from './departmentModels.mjs'
+import { companies } from './companiesModels.mjs'
 
 class contract extends Model {}
 
@@ -11,6 +14,33 @@ contract.init(
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true
+    },
+    user_id: {
+      type: DataTypes.UUID,
+      allowNull: true,
+      references: {
+        model: user,
+        key: 'id'
+      },
+      onDelete: 'CASCADE'
+    },
+    company_id: {
+      type: DataTypes.UUID,
+      allowNull: true,
+      references: {
+        model: companies,
+        key: 'id'
+      },
+      onDelete: 'CASCADE'
+    },
+    department_id: {
+      type: DataTypes.UUID,
+      allowNull: true,
+      references: {
+        model: department,
+        key: 'id'
+      },
+      onDelete: 'CASCADE'
     },
     type_id: {
       type: DataTypes.UUID,
@@ -48,6 +78,10 @@ contract.init(
     modelName: 'contract'
   }
 )
+contract.belongsTo(user, {
+  foreignKey: 'user_id',
+  OnDelete: 'CASCADE'
+})
 
 contract.belongsTo(contractTypes, {
   foreignKey: 'type_id',
@@ -59,6 +93,15 @@ contract.belongsTo(position, {
   onDelete: 'CASCADE'
 })
 
+contract.belongsTo(companies, {
+  foreignKey: 'company_id',
+  OnDelete: 'CASCADE'
+})
+
+contract.belongsTo(department, {
+  foreignKey: 'department_id',
+  OnDelete: 'CASCADE'
+})
 export { contract }
 
 contract.sync()

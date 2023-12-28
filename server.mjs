@@ -14,7 +14,6 @@ import departmentRouter from './src/routes/DepartmentRoutes.mjs'
 import ContractRouter from './src/routes/ContractRoutes.mjs'
 import ContractTypesRouter from './src/routes/ContractTypesRoutes.mjs'
 import PositionsRouter from './src/routes/PositionsRoutes.mjs'
-import EmployeeRouter from './src/routes/EmployeeRoutes.mjs'
 import VacationsRouter from './src/routes/VacationsRoutes.mjs'
 import VacationsFormRouter from './src/routes/VacationsFormRoutes.mjs'
 
@@ -38,7 +37,6 @@ app.get('/', (req, res) => {
 })
 app.use('/api/user', userRouter)
 app.use('/api/auth', authRoutes)
-app.use('/api/employee', EmployeeRouter)
 app.use('/api/company', companiesRouter)
 app.use('/api/department', departmentRouter)
 app.use('/api/contract', ContractRouter)
