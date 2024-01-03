@@ -40,4 +40,12 @@ export class vacationsController {
       return res.status(500).send({ message: 'error en el servidor' })
     }
   }
+
+  static async cronJob (req, res) {
+    try {
+      //
+    } catch (error) {
+
+    }
+  }
 }

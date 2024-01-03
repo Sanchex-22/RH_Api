@@ -28,16 +28,15 @@ export class userController {
       roles = roles === '' ? 'User' : roles
       roles = normalizeRole(roles)
 
-      if (!passwordPattern.test(password)) {
-        return res.status(404).send({ message: 'La contraseña debe contener al menos 8 caracteres, 1 letra mayúscula y 1 número.' })
-      }
+      if (!passwordPattern.test(password)) { return res.status(404).send({ message: 'La contraseña debe contener al menos 8 caracteres, 1 letra mayúscula y 1 número.' }) }
 
-      if (!email.endsWith('@gmail.com') && !email.endsWith('@intermaritime.org')) {
-        return res.status(404).send({ message: 'El correo electrónico debe tener una terminación en "@gmail.com o @intermaritime.org"".' })
-      }
+      if (!email.endsWith('@gmail.com') && !email.endsWith('@intermaritime.org')) { return res.status(404).send({ message: 'El correo electrónico debe tener una terminación en "@gmail.com o @intermaritime.org"".' }) }
 
       const existingUser = await user.findOne({ where: { username } })
       if (existingUser) { return res.status(400).send({ message: 'Ya existe un usuario con este nombre de usuario.' }) }
+
+      const existingId = await persons.findOne({ where: { identification } })
+      if (existingId) { return res.status(400).send({ message: 'Esta cedula es invalida' }) }
 
       const existingUserEmail = await user.findOne({ where: { email } })
       if (existingUserEmail) { return res.status(400).send({ message: 'Ya existe un usuario con este correo electrónico.' }) }
@@ -50,9 +49,7 @@ export class userController {
 
       password = await encrypt(pass)
 
-      const users = await user.create({
-        username, email, password, roles, status
-      }, { transaction })
+      const users = await user.create({ username, email, password, roles, status }, { transaction })
 
       await persons.create({
         user_id: users.id,
@@ -75,10 +72,14 @@ export class userController {
         end_date
       }, { transaction })
 
+      const fecha_fin_emp = new Date(start_date)
+      fecha_fin_emp.setMonth(fecha_fin_emp.getMonth() + 11)
+
       const v = await vacations.create({
         user_id: users.id,
         accumulated_vacations: '0',
         aproved_forms: '0',
+        next_vacation: fecha_fin_emp,
         rejected_forms: '0',
         status: '0'
       }, { transaction })

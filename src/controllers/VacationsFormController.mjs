@@ -1,7 +1,5 @@
 /* eslint-disable camelcase */
-import { Sequelize } from 'sequelize'
 import { vacationsForm } from '../database/vacationsFormModels.mjs'
-import sequelize from '../database/dbConnect.mjs'
 import { contract } from '../database/contractModels.mjs'
 export class vacationsFormController {
   static async newVacationsForm (req, res) {
@@ -11,14 +9,17 @@ export class vacationsFormController {
       const defaultValues = { type: 'vacaciones', status: 'no aprobado', approved_by: '', view: 'false', comment: '' }
       const { send_by, send_to, tittle, description, start_date, end_date } = req.body
 
-      // Esto viene de la BD
-      const fecha_inicio_emp = new Date('2023-01-22T15:38:35.836Z')
+      // verficaciion si el usuario puede pedir vacaciones.
+      const contrato = await contract.findOne({ where: { user_id: send_by } })
+      console.log(' <------>' + contrato.start_date)
+      const fecha_inicio_emp = contrato.start_date
 
       const fecha_fin_emp = new Date(fecha_inicio_emp)
       fecha_fin_emp.setMonth(fecha_fin_emp.getMonth() + 11)
       console.log(fecha_actual + ' y ' + fecha_fin_emp)
+
       if ((fecha_actual >= fecha_fin_emp)) {
-        // calculo de dias
+      // calculo de dias
         const inicio = new Date(start_date)
         const final = new Date(end_date)
         const timeDifference = final - inicio
@@ -29,11 +30,6 @@ export class vacationsFormController {
 
         // console.log(`Días de diferencia: ${request_days} días`)
         console.log(`Horas de diferencia: ${request_hour} horas`)
-
-        // verficaciion si el usuario puede pedir vacaciones.
-        const contrato = await contract.findOne({ where: { user_id: send_by } })
-
-        console.log('contrato id' + contrato.id + ' fecha de inicio del empleado -> ' + contrato.start_date)
 
         await vacationsForm.create({
           status: defaultValues.status,

@@ -23,6 +23,9 @@ vacations.init(
     status: {
       type: DataTypes.BOOLEAN
     },
+    next_vacation: {
+      type: DataTypes.DATE
+    },
     user_id: {
       type: DataTypes.UUID,
       allowNull: true,
