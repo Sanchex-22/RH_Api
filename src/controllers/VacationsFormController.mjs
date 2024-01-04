@@ -117,10 +117,24 @@ export class vacationsFormController {
       const form = await vacationsForm.findAll({
         order: [['createdAt', 'DESC']]
       })
-      if (!form) { return res.status(404).send({ message: 'El formulario no fue encontrado o no existe' }) }
+      if (!form) { return res.status(404).send({ message: 'Los formularios no fueron encontrados o no existen' }) }
       return res.status(200).json(form)
     } catch (error) {
       return res.status(500).send({ message: 'error en el servidor' })
+    }
+  }
+
+  static async getAllInboxForms (req, res) {
+    try {
+      const id = req.body.id
+      const form = await vacationsForm.findAll({
+        where: { send_to: id },
+        order: [['createdAt', 'DESC']]
+      })
+      if (!form) { return res.status(404).send({ message: 'Los formularios no fueron encontrados o no existen' }) }
+      return res.status(200).json(form)
+    } catch (error) {
+      return res.status(200).json
     }
   }
 

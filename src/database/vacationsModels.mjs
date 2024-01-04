@@ -14,6 +14,9 @@ vacations.init(
     accumulated_vacations: {
       type: DataTypes.INTEGER
     },
+    accumulated_days: {
+      type: DataTypes.INTEGER
+    },
     aproved_forms: {
       type: DataTypes.INTEGER
     },

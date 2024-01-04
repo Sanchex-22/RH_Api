@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import { vacations } from "../database/vacationsModels.mjs"
+import { vacations } from '../database/vacationsModels.mjs'
 export class vacationsController {
   static async newVacations (req, res) {
     try {
@@ -27,7 +27,8 @@ export class vacationsController {
 
   static async getVacations (req, res) {
     try {
-      return res.status(200).json('')
+      const v = await vacations.findOne({ where: req.body.id })
+      return res.status(200).json(v)
     } catch (error) {
       return res.status(500).send({ message: 'error en el servidor' })
     }
@@ -35,7 +36,8 @@ export class vacationsController {
 
   static async getAllVacations (req, res) {
     try {
-      return res.status(200).json('')
+      const v = await vacations.findAll()
+      return res.status(200).json(v)
     } catch (error) {
       return res.status(500).send({ message: 'error en el servidor' })
     }

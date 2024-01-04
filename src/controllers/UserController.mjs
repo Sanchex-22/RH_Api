@@ -78,6 +78,7 @@ export class userController {
       const v = await vacations.create({
         user_id: users.id,
         accumulated_vacations: '0',
+        accumulated_days: '15',
         aproved_forms: '0',
         next_vacation: fecha_fin_emp,
         rejected_forms: '0',

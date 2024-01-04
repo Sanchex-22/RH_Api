@@ -11,4 +11,5 @@ VacationsFormRouter.delete('/deleteVacationsForm', AuthMiddlewire.Authorization,
 VacationsFormRouter.put('/editVacationsForm/:id', AuthMiddlewire.Authorization, vacationsFormController.editVacationsForm)
 VacationsFormRouter.put('/viewVacationsForms/:id', AuthMiddlewire.Authorization, vacationsFormController.viewVacationsForm)
 VacationsFormRouter.put('/revisionVacationsForm', AuthMiddlewire.Authorization, vacationsFormController.revisionVacationsForm)
+VacationsFormRouter.get('/getAllInboxForm', AuthMiddlewire.Authorization, vacationsFormController.getAllInboxForms)
 export default VacationsFormRouter
