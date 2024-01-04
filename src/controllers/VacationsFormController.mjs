@@ -127,6 +127,7 @@ export class vacationsFormController {
   static async getAllInboxForms (req, res) {
     try {
       const id = req.body.id
+      // console.log(id)
       const form = await vacationsForm.findAll({
         where: { send_to: id },
         order: [['createdAt', 'DESC']]
