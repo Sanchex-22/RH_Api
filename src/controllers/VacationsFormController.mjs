@@ -118,7 +118,7 @@ export class vacationsFormController {
         order: [['createdAt', 'DESC']]
       })
       if (!form) { return res.status(404).send({ message: 'Los formularios no fueron encontrados o no existen' }) }
-      return res.status(200).json(form)
+      return res.status(200).send({ form })
     } catch (error) {
       return res.status(500).send({ message: 'error en el servidor' })
     }
@@ -126,14 +126,14 @@ export class vacationsFormController {
 
   static async getAllInboxForms (req, res) {
     try {
-      const id = req.body.id
-      // console.log(id)
+      const id = req.params.id
+      console.log(id)
       const form = await vacationsForm.findAll({
         where: { send_to: id },
         order: [['createdAt', 'DESC']]
       })
       if (!form) { return res.status(404).send({ message: 'Los formularios no fueron encontrados o no existen' }) }
-      return res.status(200).json(form)
+      return res.status(200).send(form)
     } catch (error) {
       return res.status(200).json
     }

@@ -7,6 +7,7 @@ import { department } from '../database/departmentModels.mjs'
 import sequelize from '../database/dbConnect.mjs'
 import { contract } from '../database/contractModels.mjs'
 import { vacations } from '../database/vacationsModels.mjs'
+import { Sequelize } from 'sequelize'
 
 export class userController {
   //* register user
@@ -127,12 +128,10 @@ export class userController {
   // * Traer a todos los usuarios
   static async getAllUsers (req, res) {
     try {
-      const u = await persons.findAndCountAll({
-        include: [
-          { model: user, required: false, attributes: ['id', 'username', 'email'] }
-        ],
-        limit: 3
+      const u = await sequelize.query('CALL GetUserDetailsList()', {
+        type: sequelize.QueryTypes.CALL
       })
+
       if (!u) { return res.status(404).send({ message: 'usuarios no encontrados' }) }
 
       return res.status(200).send({
